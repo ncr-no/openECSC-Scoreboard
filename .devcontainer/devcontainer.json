@@ -1,0 +1,26 @@
+{
+  "name": "Express.js",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "frontend",
+  "workspaceFolder": "/app",
+  "extensions": [
+      "dbaeumer.vscode-eslint",
+      "cweijan.vscode-postgresql-client2"
+  ],
+  "settings": {
+      "eslint.nodePath": "/usr/local/lib/node_modules",
+      "eslint.validate": [
+          {
+              "language": "javascript",
+              "autoFix": true
+          },
+          {
+              "language": "javascriptreact",
+              "autoFix": true
+          }
+      ]
+  },
+  "forwardPorts": [3010,8080,3306,3000],
+  "remoteUser": "node",
+  "postCreateCommand": "git config --global --add safe.directory '*'"
+}
