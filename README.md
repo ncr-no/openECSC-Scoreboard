@@ -14,7 +14,12 @@ To run the project, follow these steps:
 6. Run `npm start` or `yarn start` to start the project.
 7. Navigate to localhost:3000 in your web browser to access the React app.
 
+
+
+
 ## Setting up the Dev Container Extension
+
+
 
 To set up the dev container extension, follow these steps:
 
@@ -22,6 +27,8 @@ To set up the dev container extension, follow these steps:
 2. Open the repository in Visual Studio Code.
 3. Click the "Remote-Containers: Open Folder in Container" command from the command palette.
 4. Wait for the container to build and start.
-5.Access the React app and PHPMyAdmin server using the same URLs as above.
+5. Access the React app and PHPMyAdmin server using the same URLs as above.
+
+
 
 That's it! You should now be able to run the project and access the React app and API. If you have any issues, please feel free to contact the NCR team for support.
