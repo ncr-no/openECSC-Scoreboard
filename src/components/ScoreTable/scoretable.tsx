@@ -6,12 +6,31 @@ import { Button, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { ReactNode } from 'react';
 
 const columns: GridColDef[] = [
-  { field: 'id', headerName: 'ID', width: 100, disableColumnMenu: true, sortable: false },
+  { field: 'id', headerName: 'Rank', width: 100, disableColumnMenu: true, sortable: false },
   { field: 'username', headerName: 'Nickname', width: 150, disableColumnMenu: true, sortable: false },
   { field: 'country', headerName: 'Country', width: 150, sortable: false },
   { field: 'age', headerName: 'Age Range', width: 150, sortable: false },
   { field: 'gender', headerName: 'Gender', width: 150, sortable: false },
-  { field: 'points', headerName: 'Score', width: 130, disableColumnMenu: true, sortable: false },
+  { field: 'points', headerName: 'Score', width: 130, disableColumnMenu: false },
+];
+
+
+const countryOptions = [
+  { value: 'USA', label: 'USA' },
+  { value: 'tunisia', label: 'Tunisia' },
+  { value: 'norway', label: 'Norway' },
+];
+
+const ageOptions = [
+  { value: 'junior', label: 'Junior' },
+  { value: 'young', label: 'Young' },
+  { value: 'senior', label: 'Senior' },
+];
+
+const genderOptions = [
+  { value: 'male', label: 'Male' },
+  { value: 'female', label: 'Female' },
+  { value: 'other', label: 'Other' },
 ];
 
 export default function DataTable() {
@@ -19,12 +38,12 @@ export default function DataTable() {
   const [totalUsers, setTotalUsers] = React.useState(0);
   const [highestScore, setHighestScore] = React.useState(0);
   const [top3Users, setTop3Users] = React.useState([]);
-  const [ageRange, setAgeRange] = React.useState('all');
-  const [gender, setGender] = React.useState('all');
-  const [country, setCountry] = React.useState('all');
+  const [ageRange, setAgeRange] = React.useState('');
+  const [gender, setGender] = React.useState('');
+  const [country, setCountry] = React.useState('');
 
   async function fetchData() {
-    const data = await getUsers('','','');
+    const data = await getUsers('', '', '');
     setTotalUsers(data.length);
     const filteredData = data.filter((row: { type: string; }) => row.type !== 'admin');
     setRows(filteredData);
@@ -68,9 +87,9 @@ export default function DataTable() {
   };
 
   const handleResetClick = () => {
-    setAgeRange('all');
-    setGender('all');
-    setCountry('all');
+    setAgeRange('');
+    setGender('');
+    setCountry('');
     fetchData();
   };
 
@@ -86,11 +105,16 @@ export default function DataTable() {
               id="age-range-select"
               value={ageRange}
               onChange={handleAgeRangeChange}
+              displayEmpty
             >
-              <MenuItem value="all">All Ages</MenuItem>
-              <MenuItem value="junior">Junior</MenuItem>
-              <MenuItem value="young">Young</MenuItem>
-              <MenuItem value="senior">Senior</MenuItem>
+              <MenuItem value="">
+                <em>All Ages</em>
+              </MenuItem>
+              {ageOptions.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
             </Select>
           </div>
           <div style={{ marginRight: '20px' }}>
@@ -99,11 +123,16 @@ export default function DataTable() {
               id="gender-select"
               value={gender}
               onChange={handleGenderChange}
+              displayEmpty
             >
-              <MenuItem value="all">All Genders</MenuItem>
-              <MenuItem value="male">Male</MenuItem>
-              <MenuItem value="female">Female</MenuItem>
-              <MenuItem value="other">Other</MenuItem>
+              <MenuItem value="">
+                <em>All Genders</em>
+              </MenuItem>
+              {genderOptions.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
             </Select>
           </div>
           <div>
@@ -112,11 +141,16 @@ export default function DataTable() {
               id="country-select"
               value={country}
               onChange={handleCountryChange}
+              displayEmpty
             >
-              <MenuItem value="all">All Countries</MenuItem>
-              <MenuItem value="USA">USA</MenuItem>
-              <MenuItem value="tunisia">Tunisia</MenuItem>
-              <MenuItem value="norway">Norway</MenuItem>
+              <MenuItem value="">
+                <em>All Countries</em>
+              </MenuItem>
+              {countryOptions.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
             </Select>
           </div>
         </div>
@@ -138,6 +172,7 @@ export default function DataTable() {
         />
       </div>
     </div>
+
   );
 }
 
