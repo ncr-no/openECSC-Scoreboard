@@ -48,11 +48,11 @@ router.get('/', async (req, res) => {
       }
     }
 
-    if (gender) {
+    if (gender && gender !== 'all') {
       filter.gender = gender;
     }
 
-    if (country) {
+    if (country && country !== 'all') {
       filter.country = country;
     }
 
