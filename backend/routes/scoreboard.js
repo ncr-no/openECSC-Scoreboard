@@ -1,6 +1,7 @@
 const express = require('express');
 const Scoreboard = require('../models/scoreboard');
 const router = express.Router();
+const { Op } = require('sequelize');
 
 
 // Create multiple score entries
@@ -23,10 +24,39 @@ router.post('/', async (req, res) => {
 });
 
 
-// Get all score entries
+// Get all score entries or with filters
 router.get('/', async (req, res) => {
   try {
-    const scores = await Scoreboard.findAll();
+    let filter = {};
+    const ageRange = req.query.ageRange;
+    const gender = req.query.gender;
+    const country = req.query.country;
+
+    if (ageRange) {
+      switch (ageRange) {
+        case 'junior':
+          filter.age = { [Op.between]: [14, 20] };
+          break;
+        case 'young':
+          filter.age = { [Op.between]: [21, 25] };
+          break;
+        case 'senior':
+          filter.age = { [Op.gt]: 25 };
+          break;
+        default:
+          break;
+      }
+    }
+
+    if (gender) {
+      filter.gender = gender;
+    }
+
+    if (country) {
+      filter.country = country;
+    }
+
+    const scores = await Scoreboard.findAll({ where: filter });
     res.json(scores);
   } catch (error) {
     console.error(error);
