@@ -33,7 +33,7 @@ export default function TopUsers({ totalUsers, highestScore, top3Users }: { tota
         </Grid>
         <Grid item xs={4}>
           <Paper className={classes.paper}>
-            <Typography variant="h5">Highest Score</Typography>
+            <Typography variant="h5">Top Score</Typography>
             <Typography>{highestScore}</Typography>
           </Paper>
         </Grid>
