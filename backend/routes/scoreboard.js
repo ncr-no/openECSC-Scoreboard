@@ -56,8 +56,20 @@ router.get('/', async (req, res) => {
       filter.country = country;
     }
 
-    const scores = await Scoreboard.findAll({ where: filter });
-    res.json(scores);
+    const scores = await Scoreboard.findAll({ where: filter, order: [['points', 'DESC']], attributes: { exclude: ['id'] } });
+    
+    // Create a new array of scores with updated IDs
+    const scoresWithNewIds = scores.map((score, index) => {
+      return {
+        id: index + 1,
+        username: score.username,
+        age: score.age,
+        gender: score.gender,
+        country: score.country,
+        points: score.points
+      }
+    });
+    res.json(scoresWithNewIds);
   } catch (error) {
     console.error(error);
     res.status(500).send('Server Error');
