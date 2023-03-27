@@ -1,0 +1,20 @@
+version: "3"
+
+services:
+  score_app:
+    env_file:
+      - ./backend/.env    
+    build: ./backend/
+    ports:
+      - "8080:8080"
+      
+  score_web:
+    env_file:
+      - .env    
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - score_app
