@@ -5,12 +5,13 @@ import DataBox from '../DataBox/databox';
 import { Button, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { ReactNode } from 'react';
 import { countriesList } from '../../countriesList';
+import './scoretable.css';
 
 
 const columns: GridColDef[] = [
-  { field: 'id', headerName: 'Rank', width: 200, disableColumnMenu: true, sortable: false },
-  { field: 'username', headerName: 'Nickname', width: 400, disableColumnMenu: true, sortable: false },
-  { field: 'points', headerName: 'Score', width: 300, disableColumnMenu: false },
+  { field: 'id', headerName: 'Rank', headerClassName: 'yellow-header',flex: 0.5, minWidth: 150, disableColumnMenu: true, sortable: false},
+  { field: 'username', headerName: 'Nickname', headerClassName: 'yellow-header',  width: 200, disableColumnMenu: true, sortable: false },
+  { field: 'points', headerName: 'Score', headerClassName: 'yellow-header',flex: 0.3, minWidth: 50, disableColumnMenu: true ,sortable: false},
 ];
 
 
@@ -90,13 +91,15 @@ export default function DataTable() {
     fetchData();
   };
 
+
+
   return (
-    <div>
+    <div >
       <DataBox totalUsers={totalUsers} highestScore={highestScore} top3Users={top3Users} />
       <br />
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         
-        <div style={{ display: 'flex', alignItems: 'center',marginLeft: '25%' }}>
+        <div style={{ display: 'flex', alignItems: 'center',marginLeft: '20%' }}>
           <div style={{ marginRight: '20px' }}>
             
             <Select
@@ -105,6 +108,7 @@ export default function DataTable() {
               value={ageRange}
               onChange={handleAgeRangeChange}
               displayEmpty
+              sx={{ backgroundColor: '#fff' }}
             >
               <MenuItem value="">
                 <em>All Ages</em>
@@ -123,6 +127,7 @@ export default function DataTable() {
               value={gender}
               onChange={handleGenderChange}
               displayEmpty
+              sx={{ backgroundColor: '#fff' }}
             >
               <MenuItem value="">
                 <em>All Genders</em>
@@ -141,6 +146,7 @@ export default function DataTable() {
               value={country}
               onChange={handleCountryChange}
               displayEmpty
+              sx={{ backgroundColor: '#fff' }}
             >
               <MenuItem value="">
                 <em>All Countries</em>
@@ -153,23 +159,29 @@ export default function DataTable() {
             </Select>
           </div>
         </div>
-        <div style={{marginRight: '25%'}}>
-          <Button variant="contained" color="primary" onClick={handleFilterClick}>Filter</Button>
+        <div style={{marginRight: '20%'}}>
+          <Button variant="contained" sx={{ backgroundColor: '#FCBD2A',color:'#000000' , '&:hover': { backgroundColor: '#FFD54F' ,color:'#000000' }}}  onClick={handleFilterClick}>Filter</Button>
           <Button variant="contained" color="secondary" onClick={handleResetClick} style={{ marginLeft: '10px' }} >Reset</Button>
         </div>
       </div>
       <div style={{ height: 700, width: '100%', marginTop: '20px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <div style={{ height: 600, width: '100%', margin: 'auto', marginLeft: '25%' , marginRight: '25%' }}>
+        <div style={{ height: 600, width: '100%', margin: 'auto', marginLeft: '20%' , marginRight: '20%' }}>
           <DataGrid
             rows={rows}
             columns={columns}
-            pageSize={20}
+            pageSize={10}
             rowsPerPageOptions={[20]}
             disableColumnSelector={true}
             autoHeight={true}
+            sx={{ backgroundColor: '#fff' }}
+            
+            
           />
         </div>
       </div>
+      <div style={{ height: 100, width: '100%'}}>
+                </div>
+      
     </div>
 
   );

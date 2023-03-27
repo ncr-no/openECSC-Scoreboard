@@ -13,31 +13,37 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(5),
     textAlign: 'center',
-    color: '#fff',
+    color: '#000',
     height: '100%',
-    backgroundColor: '#2196f3',
+    backgroundColor: '#FCBD2A',
     
   },
   bold: {
     fontWeight: 'bold',
+    fontSize: '2rem',
+    
   },
   bigger: {
-    fontSize: '1.5rem',
+    fontSize: '1.6rem',
+    
   },
   gold: {
-    color: 'gold',
+    
     fontWeight: 'bold',
-    fontSize: '1.3rem'
+    fontSize: '1.4rem',
+    
   },
   silver: {
-    color: 'silver',
+    
     fontWeight: 'bold',
-    fontSize: '1.3rem'
+    fontSize: '1.2rem',
+    
   },
   bronze: {
-    color: '#fcca7e',
+    
     fontWeight: 'bold',
-    fontSize: '1rem'
+    fontSize: '1rem',
+    
   }
 }));
 
@@ -49,22 +55,22 @@ export default function TopUsers({ totalUsers, highestScore, top3Users }: { tota
       <Grid container spacing={2}>
         <Grid item xs={4}>
           <Paper className={classes.paper}>
-            <Typography variant="h5">Total Players</Typography>
-            <Typography className={`${classes.bold} ${classes.bigger}`}>{totalUsers}</Typography>
+            <Typography variant="h5" className={`${classes.bold}`}>Total Players</Typography>
+            <Typography className={` ${classes.bigger}`}>{totalUsers}</Typography>
           </Paper>
         </Grid>
         <Grid item xs={4}>
           <Paper className={classes.paper}>
-            <Typography variant="h5">Top Score</Typography>
-            <Typography className={`${classes.bold} ${classes.bigger}`}>{highestScore}</Typography>
+            <Typography variant="h5" className={`${classes.bold}`}>Top Score</Typography>
+            <Typography className={` ${classes.bigger}`}>{highestScore}</Typography>
           </Paper>
         </Grid>
         <Grid item xs={4}>
           <Paper className={classes.paper}>
-            <Typography variant="h5">Top 3 Scores</Typography>
+            <Typography variant="h5" className={`${classes.bold}`}>Top 3 Scores</Typography>
             {top3Users.map((user, index) => (
               <Typography key={index} className={index === 0 ? classes.gold : index === 1 ? classes.silver : classes.bronze}>
-                {user.username} - {user.points} {index === 0 && <MilitaryTech fontSize="small" />}
+                {user.username} - {user.points} {index === 0 && <MilitaryTech sx={{textShadow: '1px 1px 3px #1C0C08'}} />}
               </Typography>
             ))}
           </Paper>
