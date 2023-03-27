@@ -4,21 +4,18 @@ import { getUsers } from '../../api/users';
 import DataBox from '../DataBox/databox';
 import { Button, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { ReactNode } from 'react';
+import { countriesList } from '../../countriesList';
+
 
 const columns: GridColDef[] = [
-  { field: 'id', headerName: 'Rank', width: 100, disableColumnMenu: true, sortable: false },
-  { field: 'username', headerName: 'Nickname', width: 150, disableColumnMenu: true, sortable: false },
-  { field: 'country', headerName: 'Country', width: 150, sortable: false },
-  { field: 'age', headerName: 'Age Range', width: 150, sortable: false },
-  { field: 'gender', headerName: 'Gender', width: 150, sortable: false },
-  { field: 'points', headerName: 'Score', width: 130, disableColumnMenu: false },
+  { field: 'id', headerName: 'Rank', width: 200, disableColumnMenu: true, sortable: false },
+  { field: 'username', headerName: 'Nickname', width: 400, disableColumnMenu: true, sortable: false },
+  { field: 'points', headerName: 'Score', width: 300, disableColumnMenu: false },
 ];
 
 
 const countryOptions = [
-  { value: 'USA', label: 'USA' },
-  { value: 'tunisia', label: 'Tunisia' },
-  { value: 'norway', label: 'Norway' },
+  ...countriesList.map(country => ({ value: country.label, label: country.label })),
 ];
 
 const ageOptions = [
@@ -47,9 +44,9 @@ export default function DataTable() {
     setTotalUsers(data.length);
     const filteredData = data.filter((row: { type: string; }) => row.type !== 'admin');
     setRows(filteredData);
-    const highestScore = filteredData.reduce((max: number, user: { total_score: number; }) => Math.max(max, user.total_score), 0);
+    const highestScore = filteredData.reduce((max: number, user: { points: number; }) => Math.max(max, user.points), 0);
     setHighestScore(highestScore);
-    const sortedData = filteredData.sort((a: { total_score: number; }, b: { total_score: number; }) => b.total_score - a.total_score);
+    const sortedData = filteredData.sort((a: { points: number; }, b: { points: number; }) => b.points - a.points);
     const top3Users = sortedData.slice(0, 3);
     setTop3Users(top3Users);
   }
@@ -72,14 +69,14 @@ export default function DataTable() {
 
     let filteredData = await getUsers(ageRange, gender, country);
     console.log(filteredData);
-
+    setTotalUsers(filteredData.length);
     filteredData = filteredData.filter((row: { type: string; }) => row.type !== 'admin');
     setRows(filteredData);
 
-    const highestScore = filteredData.reduce((max: number, user: { total_score: number; }) => Math.max(max, user.total_score), 0);
+    const highestScore = filteredData.reduce((max: number, user: { points: number; }) => Math.max(max, user.points), 0);
     setHighestScore(highestScore);
 
-    const sortedData = filteredData.sort((a: { total_score: number; }, b: { total_score: number; }) => b.total_score - a.total_score);
+    const sortedData = filteredData.sort((a: { points: number; }, b: { points: number; }) => b.points - a.points);
 
     const top3Users = sortedData.slice(0, 3);
 
@@ -98,8 +95,10 @@ export default function DataTable() {
       <DataBox totalUsers={totalUsers} highestScore={highestScore} top3Users={top3Users} />
       <br />
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+        
+        <div style={{ display: 'flex', alignItems: 'center',marginLeft: '25%' }}>
           <div style={{ marginRight: '20px' }}>
+            
             <Select
               labelId="age-range-label"
               id="age-range-select"
@@ -154,22 +153,22 @@ export default function DataTable() {
             </Select>
           </div>
         </div>
-        <div>
+        <div style={{marginRight: '25%'}}>
           <Button variant="contained" color="primary" onClick={handleFilterClick}>Filter</Button>
           <Button variant="contained" color="secondary" onClick={handleResetClick} style={{ marginLeft: '10px' }} >Reset</Button>
         </div>
       </div>
       <div style={{ height: 700, width: '100%', marginTop: '20px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          pageSize={20}
-          rowsPerPageOptions={[20]}
-          disableColumnSelector={true}
-          autoHeight={true}
-          style={{ justifyContent: 'center' }}
-
-        />
+        <div style={{ height: 600, width: '100%', margin: 'auto', marginLeft: '25%' , marginRight: '25%' }}>
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            pageSize={20}
+            rowsPerPageOptions={[20]}
+            disableColumnSelector={true}
+            autoHeight={true}
+          />
+        </div>
       </div>
     </div>
 
