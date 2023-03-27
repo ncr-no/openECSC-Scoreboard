@@ -14,7 +14,6 @@ export default function ButtonAppBar() {
     <Box sx={{ display: 'flex' }}>
       <AppBar position="static" style={{ zIndex: 2 }}>
         <Toolbar>
-          <SideBar />
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Score Dashboard
           </Typography>
