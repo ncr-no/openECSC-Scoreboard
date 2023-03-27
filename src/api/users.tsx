@@ -2,11 +2,11 @@ import axios from 'axios';
 
 export async function getUsers(ageRange: string | undefined, gender: string | undefined, country: string | undefined) {
   try {
-    const secretKey = process.env.REACT_APP_SECRET_KEY; 
+    const secretKey = process.env.SECRET_KEY; 
+    let url = process.env.API_URL || 'score_app:8080/scoreboard'; 
     const config = {
       headers: { Authorization: `Bearer ${secretKey}` }
     };
-    let url = 'http://localhost:8080/scoreboard';
     let filters = {};
     if (ageRange) {
       switch (ageRange) {
