@@ -2,8 +2,8 @@ import axios from 'axios';
 
 export async function getUsers(ageRange: string | undefined, gender: string | undefined, country: string | undefined) {
   try {
-    const secretKey = process.env.SECRET_KEY; 
-    let url = process.env.API_URL || 'score_app:8080/scoreboard'; 
+    const secretKey = process.env.SECRET_KEY || "73dfa922d5cedf521a5e7d4baec59d3ee82aa45277f32a7c7da852e8bccadb5b"; 
+    let url = process.env.API_URL || 'http://localhost:8080/scoreboard'; 
     const config = {
       headers: { Authorization: `Bearer ${secretKey}` }
     };
