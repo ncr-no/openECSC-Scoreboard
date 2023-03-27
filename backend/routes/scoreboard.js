@@ -12,7 +12,22 @@ router.post('/', async (req, res) => {
 
     for (const score of scores) {
       const { username, age, points, country, gender } = score;
-      const createdScore = await Scoreboard.create({ username, age, points, country, gender });
+      const existingScore = await Scoreboard.findOne({ where: { username: username } });
+
+      let createdScore;
+      if (existingScore) {
+        // Update the existing record
+        existingScore.age = age;
+        existingScore.points = points;
+        existingScore.country = country;
+        existingScore.gender = gender;
+        await existingScore.save();
+        createdScore = existingScore;
+      } else {
+        // Create a new record
+        createdScore = await Scoreboard.create({ username, age, points, country, gender });
+      }
+
       createdScores.push(createdScore);
     }
 
@@ -22,6 +37,7 @@ router.post('/', async (req, res) => {
     res.status(500).send('Server Error');
   }
 });
+
 
 
 // Get all score entries or with filters
