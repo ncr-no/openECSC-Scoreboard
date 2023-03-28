@@ -44,7 +44,7 @@ export const countriesList = [
   { value: 'Croatia', label: 'Croatia' },
   { value: 'Cuba', label: 'Cuba' },
   { value: 'Cyprus', label: 'Cyprus' },
-  { value: 'Czechia', label: 'Czechia' },
+  { value: 'Czech-Republic', label: 'Czech Republic' },
   { value: 'Denmark', label: 'Denmark' },
   { value: 'Djibouti', label: 'Djibouti' },
   { value: 'Dominica', label: 'Dominica' },
