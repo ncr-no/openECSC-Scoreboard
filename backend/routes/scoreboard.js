@@ -4,9 +4,14 @@ const router = express.Router();
 const { Op } = require('sequelize');
 const authenticate = require('../auth');
 
+function toSentenceCase(str) {
+  return str.toLowerCase().replace(/(^\s*\w|[\.\?!]\s*\w)/g, function (c) {
+    return c.toUpperCase();
+  });
+}
 
 // Create multiple score entries
-router.post('/',authenticate, async (req, res) => {
+router.post('/', authenticate, async (req, res) => {
   try {
     const scores = req.body;
     const createdScores = [];
@@ -66,7 +71,7 @@ router.get('/', async (req, res) => {
     }
 
     if (gender && gender !== 'all') {
-      filter.gender = gender;
+      filter.gender = toSentenceCase(gender);
     }
 
     if (country && country !== 'all') {
@@ -74,14 +79,14 @@ router.get('/', async (req, res) => {
     }
 
     const scores = await Scoreboard.findAll({ where: filter, order: [['points', 'DESC']], attributes: { exclude: ['id'] } });
-    
+
     // Create a new array of scores with updated IDs
     const scoresWithNewIds = scores.map((score, index) => {
       return {
         id: index + 1,
         username: score.username,
         age: score.age,
-        gender: score.gender.toLowerCase(),
+        gender: score.gender,
         country: score.country,
         points: score.points
       }
