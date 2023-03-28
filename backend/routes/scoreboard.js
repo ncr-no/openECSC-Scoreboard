@@ -2,10 +2,11 @@ const express = require('express');
 const Scoreboard = require('../models/scoreboard');
 const router = express.Router();
 const { Op } = require('sequelize');
+const authenticate = require('../auth');
 
 
 // Create multiple score entries
-router.post('/', async (req, res) => {
+router.post('/',authenticate, async (req, res) => {
   try {
     const scores = req.body;
     const createdScores = [];

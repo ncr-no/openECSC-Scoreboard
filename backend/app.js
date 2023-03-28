@@ -12,22 +12,13 @@ app.use(cors({
 
 }));
 const PORT = process.env.PORT || 8080;
-const SECRET_KEY = process.env.SECRET_KEY; 
+
 
 app.use(express.json());
 
-// middleware to check for the secret key in the request headers
-const authenticate = (req, res, next) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader || authHeader.split(' ')[1] !== SECRET_KEY) {
-    return res.status(401).send('Unauthorized');
-  }
-  res.header('Authorization', `Bearer ${SECRET_KEY}`);
-  next();
-};
 
-app.use('/scoreboard', authenticate, scoreboardRoutes); 
-app.use(authenticate);
+
+app.use('/scoreboard', scoreboardRoutes); 
 app.use(express.json());
 
 sequelize
