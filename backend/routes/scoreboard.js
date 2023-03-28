@@ -81,7 +81,7 @@ router.get('/', async (req, res) => {
         id: index + 1,
         username: score.username,
         age: score.age,
-        gender: score.gender,
+        gender: score.gender.toLowerCase(),
         country: score.country,
         points: score.points
       }
