@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export async function getUsers(ageRange: string | undefined, gender: string | undefined, country: string | undefined) {
   try {
-    let url = process.env.API_URL || 'https://scoreboard.openecsc.dyn.ncr.ntnu.no/api/scoreboard/'; 
+    let url = process.env.API_URL || 'https://open.ecsc.no/api/scoreboard/'; 
 
     let filters = {};
     if (ageRange) {

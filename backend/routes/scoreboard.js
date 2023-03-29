@@ -85,9 +85,6 @@ router.get('/', async (req, res) => {
       return {
         id: index + 1,
         username: score.username,
-        age: score.age,
-        gender: score.gender,
-        country: score.country,
         points: score.points
       }
     });
