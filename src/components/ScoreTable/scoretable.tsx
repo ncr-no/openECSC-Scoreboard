@@ -6,12 +6,15 @@ import { Button, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { ReactNode } from 'react';
 import { countriesList } from '../../countriesList';
 import './scoretable.css';
+import IconButton from '@mui/material/IconButton';
+import TimerSharpIcon from '@mui/icons-material/TimerSharp';
+import Menu from '@mui/material/Menu';
 
 
 const columns: GridColDef[] = [
-  { field: 'id', headerName: 'Rank', headerClassName: 'yellow-header',flex: 0.5, minWidth: 150, disableColumnMenu: true, sortable: false},
-  { field: 'username', headerName: 'Nickname', headerClassName: 'yellow-header',  width: 200, disableColumnMenu: true, sortable: false },
-  { field: 'points', headerName: 'Score', headerClassName: 'yellow-header',flex: 0.3, minWidth: 50, disableColumnMenu: true ,sortable: false},
+  { field: 'id', headerName: 'Rank', headerClassName: 'yellow-header', flex: 0.5, minWidth: 150, disableColumnMenu: true, sortable: false },
+  { field: 'username', headerName: 'Nickname', headerClassName: 'yellow-header', width: 200, disableColumnMenu: true, sortable: false },
+  { field: 'points', headerName: 'Score', headerClassName: 'yellow-header', flex: 0.3, minWidth: 50, disableColumnMenu: true, sortable: false },
 ];
 
 
@@ -66,8 +69,7 @@ export default function DataTable() {
     setCountry(event.target.value as string)
   };
 
-  const handleFilterClick = async () => {
-
+  const handleFilterClick = async (intervalInMinutes?: number) => {
     let filteredData = await getUsers(ageRange, gender, country);
     console.log(filteredData);
     setTotalUsers(filteredData.length);
@@ -81,8 +83,17 @@ export default function DataTable() {
 
     const top3Users = sortedData.slice(0, 3);
 
-    setTop3Users(top3Users);
+    if (intervalInMinutes) {
+      setInterval(() => {
+        setTop3Users(top3Users);
+        console.log('update');
+      }, intervalInMinutes * 60 * 1000);
+    } else {
+      setTop3Users(top3Users);
+    }
   };
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
 
   const handleResetClick = () => {
     setAgeRange('');
@@ -90,7 +101,13 @@ export default function DataTable() {
     setCountry('');
     fetchData();
   };
+  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
 
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
 
   return (
@@ -98,10 +115,10 @@ export default function DataTable() {
       <DataBox totalUsers={totalUsers} highestScore={highestScore} top3Users={top3Users} />
       <br />
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        
-        <div style={{ display: 'flex', alignItems: 'center',marginLeft: '20%' }}>
+
+        <div style={{ display: 'flex', alignItems: 'center', marginLeft: '20%' }}>
           <div style={{ marginRight: '20px' }}>
-            
+
             <Select
               labelId="age-range-label"
               id="age-range-select"
@@ -159,13 +176,47 @@ export default function DataTable() {
             </Select>
           </div>
         </div>
-        <div style={{marginRight: '20%'}}>
-          <Button variant="contained" sx={{ backgroundColor: '#FCBD2A',color:'#000000' , '&:hover': { backgroundColor: '#FFD54F' ,color:'#000000' }}}  onClick={handleFilterClick}>Filter</Button>
+        <div style={{ marginRight: '20%', display: 'flex' }}>
+
+          <IconButton
+            size="large"
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            onClick={handleMenu}
+            color="default"
+            title="Timer for refreshing the page"
+            sx={{ marginRight: '10px', color: 'white' }}
+          >
+            <TimerSharpIcon />
+          </IconButton>
+          <Menu
+            id="menu-appbar"
+            anchorEl={anchorEl}
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
+            <MenuItem onClick={() => { handleFilterClick(2); handleClose(); }}>2 min</MenuItem>
+            <MenuItem onClick={() => { handleFilterClick(15); handleClose(); }}>15 min</MenuItem>
+            <MenuItem onClick={() => { handleFilterClick(30); handleClose(); }}>30 min</MenuItem>
+          </Menu>
+
+          <Button variant="contained" sx={{ backgroundColor: '#FCBD2A', color: '#000000', '&:hover': { backgroundColor: '#FFD54F', color: '#000000' } }} onClick={() => handleFilterClick()}>Filter</Button>
           <Button variant="contained" color="secondary" onClick={handleResetClick} style={{ marginLeft: '10px' }} >Reset</Button>
+
         </div>
       </div>
       <div style={{ height: 700, width: '100%', marginTop: '20px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <div style={{ height: 600, width: '100%', margin: 'auto', marginLeft: '20%' , marginRight: '20%' }}>
+        <div style={{ height: 600, width: '100%', margin: 'auto', marginLeft: '20%', marginRight: '20%' }}>
           <DataGrid
             rows={rows}
             columns={columns}
@@ -174,16 +225,17 @@ export default function DataTable() {
             disableColumnSelector={true}
             autoHeight={true}
             sx={{ backgroundColor: '#fff' }}
-            
-            
+
+
           />
         </div>
       </div>
-      <div style={{ height: 100, width: '100%'}}>
-                </div>
-      
+      <div style={{ height: 100, width: '100%' }}>
+      </div>
+
     </div>
 
   );
+
 }
 
