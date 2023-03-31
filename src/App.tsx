@@ -1,13 +1,18 @@
 import React from 'react';
-import SideBar from './components/Sidebar/sidebar';
+import SideBar from './components/Navbar/navbar';
 import Waves from './components/waves/waves';
 import Footer from './components/Footer/footer';
+import 'typeface-open-sans';
+
 function App() {
   const divStyle: React.CSSProperties = {
     backgroundColor: '#0077BA',
+    fontFamily: 'Open Sans',
   };
   const footerStyle: React.CSSProperties = {
     backgroundColor: '#FFFFFF',
+    fontFamily: 'Open Sans',
+
   };
   
   return (
