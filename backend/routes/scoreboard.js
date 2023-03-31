@@ -88,6 +88,13 @@ router.get('/', async (req, res) => {
         points: score.points
       }
     });
+    scoresWithNewIds.forEach((score, index) => {
+      let rank = index + 1;
+      if (index > 0 && score.points === scoresWithNewIds[index - 1].points) {
+        rank = scoresWithNewIds[index - 1].rank;
+      }
+      score.rank = rank;
+    });
     res.json(scoresWithNewIds);
   } catch (error) {
     console.error(error);

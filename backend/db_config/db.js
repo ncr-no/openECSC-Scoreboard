@@ -1,6 +1,6 @@
 const { Sequelize } = require('sequelize');
 
-const DB_NAME = process.env.DB_NAME; 
+const DB_NAME = process.env.DB_NAME || 'scoreboard'; 
 
 const sequelize = new Sequelize({
   dialect: 'sqlite',

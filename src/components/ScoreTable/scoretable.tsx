@@ -12,7 +12,7 @@ import Menu from '@mui/material/Menu';
 
 
 const columns: GridColDef[] = [
-  { field: 'id', headerName: 'Rank', headerClassName: 'yellow-header', flex: 0.5, minWidth: 150, disableColumnMenu: true, sortable: false },
+  { field: 'rank', headerName: 'Rank', headerClassName: 'yellow-header', flex: 0.5, minWidth: 150, disableColumnMenu: true, sortable: false },
   { field: 'username', headerName: 'Nickname', headerClassName: 'yellow-header', width: 200, disableColumnMenu: true, sortable: false },
   { field: 'points', headerName: 'Score', headerClassName: 'yellow-header', flex: 0.3, minWidth: 50, disableColumnMenu: true, sortable: false },
 ];
