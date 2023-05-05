@@ -52,20 +52,20 @@ export default function TopUsers({ totalUsers, highestScore, top3Users }: { tota
 
   return (
     <div className={classes.root}>
-      <Grid container spacing={2}>
-        <Grid item xs={4}>
+      <Grid  container spacing={2}>
+      <Grid item xs={12} sm={4}>
           <Paper className={classes.paper}>
             <Typography variant="h5" className={`${classes.bold}`}>Total Players</Typography>
             <Typography className={` ${classes.bigger}`}>{totalUsers}</Typography>
           </Paper>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={4}>
           <Paper className={classes.paper}>
             <Typography variant="h5" className={`${classes.bold}`}>Top Score</Typography>
             <Typography className={` ${classes.bigger}`}>{highestScore}</Typography>
           </Paper>
         </Grid>
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={4}>
           <Paper className={classes.paper}>
             <Typography variant="h5" className={`${classes.bold}`}>Top 3 Scores</Typography>
             {top3Users.map((user, index) => (
