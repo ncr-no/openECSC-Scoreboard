@@ -1,7 +1,7 @@
 const express = require('express');
 const Scoreboard = require('../models/scoreboard');
 const router = express.Router();
-const { Op } = require('sequelize');
+const { Op , Sequelize } = require('sequelize');
 const authenticate = require('../auth');
 
 function toSentenceCase(str) {
@@ -96,6 +96,30 @@ router.get('/', async (req, res) => {
       score.rank = rank;
     });
     res.json(scoresWithNewIds);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Server Error');
+  }
+});
+
+router.get('/info', async (req, res) => {
+  try {
+    const countries = await Scoreboard.findAll({
+      attributes: [
+        'country',
+        [Sequelize.fn('COUNT', Sequelize.col('id')), 'users'],
+        [Sequelize.fn('MAX', Sequelize.col('points')), 'topScore']
+      ],
+      group: ['country']
+    });
+
+    const result = {};
+
+    countries.forEach(country => {
+      result[country.country] = { users: country.dataValues.users, topScore: country.dataValues.topScore };
+    });
+
+    res.json(result);
   } catch (error) {
     console.error(error);
     res.status(500).send('Server Error');
