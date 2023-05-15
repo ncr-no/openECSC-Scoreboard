@@ -10,7 +10,7 @@ interface InfoData {
 }
 
 export const getInfo = () => {
-  let url = process.env.API_URL || 'http://localhost:8080/scoreboard/info/';
+  let url = process.env.API_URL || 'https://open.ecsc.no/api/v1/scoreboard/info/';
 
   return axios.get(url)
     .then(response => {
