@@ -5,20 +5,33 @@ import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import CssBaseline from '@mui/material/CssBaseline';
 import Typography from '@mui/material/Typography';
-import ScoreTable from '../ScoreTable/scoretable';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import Drawer from '@mui/material/Drawer';
+import Divider from '@mui/material/Divider';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
 import logo from '../../img/LogoOpenECSC.png';
+import ListItemButton from '@mui/material/ListItemButton';
+import { AlignHorizontalCenter } from '@mui/icons-material';
+
+const Home_URL = process.env.Home_URL || 'https://open.ecsc.no';
+const Users_URL = process.env.Users_URL || 'https://open.ecsc.no/users';
+const Scoreboard_URL = process.env.Scroboard_URL || 'https://open.ecsc.no/scoreboard';
+const Challenges_URL = process.env.Challenges_URL || 'https://open.ecsc.no/challenges';
+const Notifications_URL = process.env.Notifications_URL || 'https://open.ecsc.no/notifications';
 
 const drawerWidth = 240;
+const navItems = [
+  { name: 'Home', link: Home_URL },
+  { name: 'Users', link: Users_URL },
+  { name: 'Scoreboard', link: Scoreboard_URL },
+  { name: 'Challenges', link: Challenges_URL },
+  { name: 'Notifications', link: Notifications_URL },
+];
 
-const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-end',
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-}));
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -42,86 +55,103 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-const Home_URL = process.env.Home_URL || 'https://open.ecsc.no';
-const Users_URL = process.env.Users_URL || 'https://open.ecsc.no/users';
-const Scoreboard_URL = process.env.Scroboard_URL || 'https://open.ecsc.no/scoreboard';
-const Challenges_URL = process.env.Challenges_URL || 'https://open.ecsc.no/challenges';
-const Notifications_URL = process.env.Notifications_URL || 'https://open.ecsc.no/notifications';
 
-export default function MiniDrawer() {
-  const [open] = React.useState(false);
+export default function Navbar() {
+  const [mobileOpen, setMobileOpen] = React.useState(false);
 
-  const handleButtonClick = (url: string) => {
-    window.location.href = url;
+  const handleDrawerToggle = () => {
+    setMobileOpen((prevState) => !prevState);
+
   };
+
+  const drawer = (
+    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
+      <Typography variant="h6" sx={{ my: 2  }}>
+        openECSC
+      </Typography>
+      <Divider />
+      <List>
+        {navItems.map((item) => (
+          <ListItem key={item.link} disablePadding>
+            <ListItemButton
+              component="a"
+              href={item.link}
+              sx={{ textAlign: 'center' }}
+            >
+              <ListItemText primary={item.name} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </Box>
+  );
 
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open} sx={{ bgcolor: 'white' }}>
+
+      <AppBar position="fixed" sx={{ bgcolor: 'white' }}>
+
         <Toolbar
-          sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            // '@media screen and (max-width: 960px)': {
+            //   flexDirection: 'column',
+            //   alignItems: 'flex-start',
+            // },
+          }}
         >
-          <Typography variant="h6" noWrap component="div" style={{ color: 'black' , cursor: 'pointer',    fontFamily: 'Open Sans',
- }} onClick={() => handleButtonClick(Home_URL)}>
-          <img src={logo} alt="Logo" style={{ marginRight: '10px', height: '30px' }} />
+
+          <IconButton
+            color="primary"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            sx={{ mr: 2, display: { sm: "none" } }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" noWrap component="div" style={{
+            color: 'black', cursor: 'pointer', fontFamily: 'Open Sans',
+            fontWeight: 700,  alignItems: 'center' , display: 'flex' , fontSize: '1rem'
+          }}
+
+            onClick={() => window.location.href = Home_URL}
+          >
+            <img src={logo} alt="Logo" style={{ marginRight: '10px', height: '30px' }} />
             openECSC
           </Typography>
-          <Box sx={{ display: 'flex', alignItems: 'center', marginRight: '50px' }}>
-            <Button
-              sx={{
-                backgroundColor: 'white',
-                fontWeight: 'bold',
-                color: 'black',
-                height: '150%',
-                '&:hover': { backgroundColor: '#FCBD2A' },
-              }}
-              onClick={() => handleButtonClick(Home_URL)}
-            >
-              Home
-            </Button>
-            <Button
-              sx={{
-                backgroundColor: 'white',
-                fontWeight: 'bold',
-                color: 'black',
-                height: '100%',
-                '&:hover': { backgroundColor: '#FCBD2A' },
-              }}
-              onClick={() => handleButtonClick(Users_URL)}
-            >
-              Users
-            </Button>
-            <Button
-              sx={{
-                backgroundColor: 'white',
-                fontWeight: 'bold',
-                color: 'black',
-                '&:hover': { backgroundColor: '#FCBD2A' },
-              }}
-              onClick={() => handleButtonClick(Scoreboard_URL)}
-            >
-              Scoreboard
-            </Button>
-            <Button
-              sx={{ backgroundColor: "white", fontWeight: 'bold', color: "black", '&:hover': { backgroundColor: '#FCBD2A' } }}
-              onClick={() => handleButtonClick(Challenges_URL)}
-            >
-              Challenges
-            </Button>
-            <Button
-              sx={{ backgroundColor: "white", fontWeight: 'bold', color: "black", '&:hover': { backgroundColor: '#FCBD2A' } }}
-              onClick={() => handleButtonClick(Notifications_URL)}
-            >
-              Notifications
-            </Button>
+          <Box sx={{ display: { xs: "none", sm: "block" } }}>
+            {navItems.map((item) => (
+              <Button key={item.name} onClick={() => {
+                window.location.href = item.link;
+              }} sx={{ color: "#000" }}>
+                {item.name}
+              </Button>
+            ))}
           </Box>
         </Toolbar>
       </AppBar>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <DrawerHeader />
-        <ScoreTable />
+      <Box component="nav">
+
+        <Drawer
+          variant="temporary"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
+          sx={{
+            display: { xs: 'block', sm: 'none' },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+          }}
+        >
+          {drawer}
+        </Drawer>
       </Box>
+
     </Box>
   );
 }

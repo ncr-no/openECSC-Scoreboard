@@ -1,12 +1,13 @@
 .footer-container {
   position: relative; /* Required to position the waves SVG element */
+  z-index: -1;
 }
 
 .waves {
   position:relative;
   width: 100%;
   height: 200px;
-  margin-bottom:9px; /*Fix for safari gap*/
+  margin-bottom:-60px; /*Fix for safari gap*/
   min-height:100px;
   max-height:150px;
   margin-top: -182px;
@@ -18,9 +19,10 @@
   text-align:center;
   background-color: white;
 }
+/*Bring the header back as classname*/
 .header{
   background-color: white;
-}
+} 
 
 /* Animation */
 
@@ -62,5 +64,14 @@
   }
   h1 {
     font-size:24px;
+  }
+}
+
+@media (min-width: 769px) {
+  .waves {
+    height: 250px;
+    min-height: 200px;
+    max-height: 400px;
+    margin-top: -150px;
   }
 }

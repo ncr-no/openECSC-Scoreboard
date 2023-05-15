@@ -1,29 +1,36 @@
 import * as React from 'react';
 import './footer.css';
-import ntnuLogo from '../../img/ntnu_logo.jpg';
-import enisaLogo from '../../img/enisa-logo.jpg';
-import capgeminiLogo from '../../img/Capgemini-logo.jpg';
-import europeanLogo from '../../img/European.jpg';
+import logos from '../../img/logos.jpg';
 
-export default function waves() {
+export default function Waves() {
+  const [showFooter, setShowFooter] = React.useState(true);
+
+  React.useEffect(() => {
+    function handleResize() {
+      setShowFooter(window.innerWidth >= 532);
+    }
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
-    <><br />
-    <div className="container">
-    <div className="logo-container">
-        <img src={capgeminiLogo} alt="Capgemini logo" className="logo-lg" />
-      </div>
-      <div className="logo-container">
-        <img src={ntnuLogo} alt="NTNU logo" className="logo-lg" />
-      </div>
-      <div className="logo-container">
-        <img src={enisaLogo} alt="ENISA logo" className="logo" />
-      </div>
-      <div className="logo-container">
-        <img src={europeanLogo} alt="European logo" className="logo-lg" />
-      </div>
-
-
-    </div>
+    <>
+      {showFooter && (
+        <div className="container">
+          <div className="logo-container">
+            <img src={logos} alt="Logos" className="logo-lg" />
+          </div>
+          <div className="copyright">
+            <p>
+              Copyright © 2023
+              NTNU. Hosted by Norwegian Cyber Range
+            </p>
+          </div>
+        </div>
+      )}
     </>
-    );
-  }
+  );
+}

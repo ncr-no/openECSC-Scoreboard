@@ -4,7 +4,7 @@ export default function waves() {
 
   return (
     <div className="footer-container">
-<div className="header">
+<div >
         <div className="inner-header flex">
         </div>
         <br />

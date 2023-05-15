@@ -1,9 +1,11 @@
 .container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   margin-top: 50px;
 }
+
 .logo-lg {
   height: 50px;
 }
@@ -15,4 +17,46 @@
 .logo {
   width: 100px;
   height: auto;
+}
+
+/* New styles for the copyright */
+p {
+  margin: 10px 0 0;
+  font-size: 12px;
+  text-align: center;
+}
+
+@media screen and (min-width: 768px) {
+  .container {
+    margin-top: 50px;
+  }
+
+
+
+  .logo-container {
+    margin: 0 50px;
+  }
+
+  .logo {
+    width: 150px;
+  }
+
+
+}
+
+@media screen and (min-width: 1200px) {
+  .container {
+    margin-top: 52px;
+  }
+
+
+
+  .logo-container {
+    margin: 0 100px;
+  }
+
+  .logo {
+    width: 200px;
+  }
+
 }
