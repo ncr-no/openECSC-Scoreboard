@@ -15,7 +15,6 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import logo from '../../img/LogoOpenECSC.png';
 import ListItemButton from '@mui/material/ListItemButton';
-import { AlignHorizontalCenter } from '@mui/icons-material';
 
 const Home_URL = process.env.Home_URL || 'https://open.ecsc.no';
 const Users_URL = process.env.Users_URL || 'https://open.ecsc.no/users';

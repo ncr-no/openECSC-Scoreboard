@@ -50,11 +50,15 @@ const MapChart: React.FC<IProps> = ({ className }) => {
         const worldLowData: geojson.FeatureCollection<geojson.Geometry, geojson.GeoJsonProperties> =
           am4geodata_worldLow as any;
 
+        const activeCountries = [''];
+        
         await Promise.all(
           worldLowData.features.map(async (feature) => {
             const countryName = feature.properties?.name;
             const { users, topScore } = await getInfoForCountry(countryName);
-            console.log(users, topScore);
+            if (users > 0) {
+              activeCountries.push(countryName);
+            }
             feature.properties = {
               ...feature.properties,
               users,
@@ -62,7 +66,6 @@ const MapChart: React.FC<IProps> = ({ className }) => {
             };
           })
         );
-
 
 
         // Create the map chart
@@ -84,10 +87,8 @@ const MapChart: React.FC<IProps> = ({ className }) => {
 
 
 
-
         polygonSeries.mapPolygons.template.setAll({
           tooltipText: "{name}\nUsers : {users}\nTop Score : {topScore}",
-
           toggleKey: "active",
           interactive: true,
           fill: am5.color("#FCBD2A"),
@@ -96,18 +97,31 @@ const MapChart: React.FC<IProps> = ({ className }) => {
           templateField: "polygonSettings"
         });
 
-        polygonSeries.mapPolygons.template.states.create("hover", {
-          fill: am5.color("#FF6E31")
+        polygonSeries.mapPolygons.template.adapters.add("fill", (fill, target) => {
+          if (target.dataItem) {
+            const countryName = (target.dataItem.dataContext as any).name;
+            if (activeCountries.includes(countryName)) {
+              return am5.color("#FF6E31");
+            }
+          }
+          return fill;
         });
 
+
+        polygonSeries.mapPolygons.template.states.create("hover", {
+          fill: am5.color("#6794DC")
+        });
+
+
         polygonSeries.mapPolygons.template.states.create("active", {
-          fill: root.interfaceColors.get("primaryButtonHover"),
+          fill: am5.color("#FF6E31")
 
         });
 
         let previousPolygon: am5map.MapPolygon | undefined;
 
         polygonSeries.mapPolygons.template.on("active", function (active, target) {
+
           if (previousPolygon && previousPolygon !== target) {
             previousPolygon.set("active", false);
           }
