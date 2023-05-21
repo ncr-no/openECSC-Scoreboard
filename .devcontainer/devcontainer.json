@@ -1,0 +1,37 @@
+{
+	"name": "Scoreboard UI",
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "app",
+	"workspaceFolder": "/app",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"dbaeumer.vscode-eslint",
+				"cweijan.vscode-postgresql-client2",
+				"donjayamanne.githistory",
+				"mhutchie.git-graph",
+				"eamodio.gitlens",
+				"github.vscode-pull-request-github",
+				"github.copilot"
+			],
+			"settings": {
+				"eslint.nodePath": "/usr/local/lib/node_modules",
+				"eslint.validate": [
+					{
+						"language": "javascript",
+						"autoFix": true
+					},
+					{
+						"language": "javascriptreact",
+						"autoFix": true
+					}
+				]
+			}
+		}
+	},
+	"forwardPorts": [
+		3010
+	],
+	"remoteUser": "node",
+	"postCreateCommand": "git config --global --add safe.directory '*' && npm install --force",
+}
