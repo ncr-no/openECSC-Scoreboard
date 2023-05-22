@@ -37,14 +37,16 @@ interface IProps {
 
 const MapChart: React.FC<IProps> = ({ className }) => {
   const chartRef = useRef<am5map.MapChart | null>(null);
+  const rootRef = useRef<am5.Root | null>(null);
 
   useEffect(() => {
     const createChart = async () => {
       if (!chartRef.current) {
-        // Create root element
-        let root = am5.Root.new("chartdiv");
-        // Set themes
-        root.setThemes([am5themes_Animated.new(root)]);
+        if (!rootRef.current) {
+          // Create root element if it doesn't exist
+          rootRef.current = am5.Root.new("chartdiv");
+          rootRef.current.setThemes([am5themes_Animated.new(rootRef.current)]);
+        }
 
         // Fetch and process data
         const worldLowData: geojson.FeatureCollection<geojson.Geometry, geojson.GeoJsonProperties> =
@@ -69,8 +71,8 @@ const MapChart: React.FC<IProps> = ({ className }) => {
 
 
         // Create the map chart
-        chartRef.current = root.container.children.push(
-          am5map.MapChart.new(root, {
+        chartRef.current = rootRef.current.container.children.push(
+          am5map.MapChart.new(rootRef.current, {
             panX: "translateX",
             panY: "translateY",
             projection: am5map.geoMercator(),
@@ -79,7 +81,7 @@ const MapChart: React.FC<IProps> = ({ className }) => {
 
         // Create main polygon series for countries
         const polygonSeries = chartRef.current.series.push(
-          am5map.MapPolygonSeries.new(root, {
+          am5map.MapPolygonSeries.new(rootRef.current, {
             geoJSON: worldLowData,
             exclude: ["AQ"],
           })
@@ -137,9 +139,7 @@ const MapChart: React.FC<IProps> = ({ className }) => {
         // Add zoom control
         chartRef.current.set(
           "zoomControl",
-          am5map.ZoomControl.new(root, {
-
-          })
+          am5map.ZoomControl.new(rootRef.current, {})
         );
 
 
