@@ -71,13 +71,16 @@ const MapChart: React.FC<IProps> = ({ className }) => {
 
 
         // Create the map chart
-        chartRef.current = rootRef.current.container.children.push(
-          am5map.MapChart.new(rootRef.current, {
-            panX: "translateX",
-            panY: "translateY",
-            projection: am5map.geoMercator(),
-          })
-        ) as am5map.MapChart;
+        if (!chartRef.current) {
+          chartRef.current = rootRef.current.container.children.push(
+            am5map.MapChart.new(rootRef.current, {
+              panX: "translateX",
+              panY: "translateY",
+              projection: am5map.geoMercator(),
+            })
+          ) as am5map.MapChart;
+        }
+        
 
         // Create main polygon series for countries
         const polygonSeries = chartRef.current.series.push(
