@@ -37,24 +37,30 @@ interface IProps {
 
 const MapChart: React.FC<IProps> = ({ className }) => {
   const chartRef = useRef<am5map.MapChart | null>(null);
+  const rootRef = useRef<am5.Root | null>(null);
 
   useEffect(() => {
     const createChart = async () => {
       if (!chartRef.current) {
-        // Create root element
-        let root = am5.Root.new("chartdiv");
-        // Set themes
-        root.setThemes([am5themes_Animated.new(root)]);
+        if (!rootRef.current) {
+          // Create root element if it doesn't exist
+          rootRef.current = am5.Root.new("chartdiv");
+          rootRef.current.setThemes([am5themes_Animated.new(rootRef.current)]);
+        }
 
         // Fetch and process data
         const worldLowData: geojson.FeatureCollection<geojson.Geometry, geojson.GeoJsonProperties> =
           am4geodata_worldLow as any;
 
+        const activeCountries = [''];
+        
         await Promise.all(
           worldLowData.features.map(async (feature) => {
             const countryName = feature.properties?.name;
             const { users, topScore } = await getInfoForCountry(countryName);
-            console.log(users, topScore);
+            if (users > 0) {
+              activeCountries.push(countryName);
+            }
             feature.properties = {
               ...feature.properties,
               users,
@@ -64,10 +70,9 @@ const MapChart: React.FC<IProps> = ({ className }) => {
         );
 
 
-
         // Create the map chart
-        chartRef.current = root.container.children.push(
-          am5map.MapChart.new(root, {
+        chartRef.current = rootRef.current.container.children.push(
+          am5map.MapChart.new(rootRef.current, {
             panX: "translateX",
             panY: "translateY",
             projection: am5map.geoMercator(),
@@ -76,7 +81,7 @@ const MapChart: React.FC<IProps> = ({ className }) => {
 
         // Create main polygon series for countries
         const polygonSeries = chartRef.current.series.push(
-          am5map.MapPolygonSeries.new(root, {
+          am5map.MapPolygonSeries.new(rootRef.current, {
             geoJSON: worldLowData,
             exclude: ["AQ"],
           })
@@ -84,10 +89,8 @@ const MapChart: React.FC<IProps> = ({ className }) => {
 
 
 
-
         polygonSeries.mapPolygons.template.setAll({
           tooltipText: "{name}\nUsers : {users}\nTop Score : {topScore}",
-
           toggleKey: "active",
           interactive: true,
           fill: am5.color("#FCBD2A"),
@@ -96,18 +99,31 @@ const MapChart: React.FC<IProps> = ({ className }) => {
           templateField: "polygonSettings"
         });
 
-        polygonSeries.mapPolygons.template.states.create("hover", {
-          fill: am5.color("#FF6E31")
+        polygonSeries.mapPolygons.template.adapters.add("fill", (fill, target) => {
+          if (target.dataItem) {
+            const countryName = (target.dataItem.dataContext as any).name;
+            if (activeCountries.includes(countryName)) {
+              return am5.color("#FF6E31");
+            }
+          }
+          return fill;
         });
 
+
+        polygonSeries.mapPolygons.template.states.create("hover", {
+          fill: am5.color("#6794DC")
+        });
+
+
         polygonSeries.mapPolygons.template.states.create("active", {
-          fill: root.interfaceColors.get("primaryButtonHover"),
+          fill: am5.color("#FF6E31")
 
         });
 
         let previousPolygon: am5map.MapPolygon | undefined;
 
         polygonSeries.mapPolygons.template.on("active", function (active, target) {
+
           if (previousPolygon && previousPolygon !== target) {
             previousPolygon.set("active", false);
           }
@@ -123,9 +139,7 @@ const MapChart: React.FC<IProps> = ({ className }) => {
         // Add zoom control
         chartRef.current.set(
           "zoomControl",
-          am5map.ZoomControl.new(root, {
-
-          })
+          am5map.ZoomControl.new(rootRef.current, {})
         );
 
 

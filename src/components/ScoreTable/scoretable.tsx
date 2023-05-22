@@ -246,7 +246,7 @@ export default function DataTable() {
             rows={rows}
             columns={columns}
             pageSize={10}
-            rowsPerPageOptions={[20]}
+            rowsPerPageOptions={[10]}
             disableColumnSelector={true}
             autoHeight={true}
             sx={{ backgroundColor: '#fff' }}

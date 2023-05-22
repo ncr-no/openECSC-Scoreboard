@@ -26,12 +26,12 @@ function App() {
   };
   
   return (
-    <><body style={divStyle}>
+    <><div style={divStyle}>
       <div className="App">
         <SideBar />
 
       </div>
-    </body>
+    </div>
     <div>
       <DrawerHeader />
     <ScoreTable />
