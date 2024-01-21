@@ -1,6 +1,6 @@
 # Getting Started with OpenECSC Scoreboard
 
-This is a scoreboard app developed by the NCR team that has been used for OpenECSC 2023. This scroebaord is just a layer of an existing scoreboard and the used data was retrieved CTFd instance.
+This is a scoreboard app developed by the NCR team that has been used for OpenECSC 2023. This scroebaord is a layer of an existing scoreboard and the used data was retrieved CTFd instance.
 
 ## Technologies
 In this project we have used the following technologies and frameworks:
